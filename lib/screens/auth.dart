@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,30 +27,40 @@ class _authScreenState extends State<authScreen> {
     _Form.currentState!.save();
     print(Enterpassword);
     print(Enteremsil);
-    try{
-    if (_isLogin) {
-      final Credential= await firebase.signInWithEmailAndPassword(
-          email: Enteremsil, password: Enterpassword);
-      print(Credential);
-    } else {
-
-       final Credential= await firebase.createUserWithEmailAndPassword(
+    try {
+      if (_isLogin) {
+        final Credential = await firebase.signInWithEmailAndPassword(
             email: Enteremsil, password: Enterpassword);
-       print(Credential);
+        print(Credential);
+      } else {
+        final Credential = await firebase.createUserWithEmailAndPassword(
+            email: Enteremsil, password: Enterpassword);
+        print(Credential);
+        await FirebaseFirestore.instance.collection('Users').doc(
+            Credential.user?.uid).set(
+            {
+              'UseName':'please fill the ',
+              'emailadress':Enteremsil,
+              "Password":Enterpassword
+            });
       }
-    }on FirebaseAuthException catch(error){
-      if(error.code=='Alreadt-Register'){
+    } on FirebaseAuthException catch (error) {
+      if (error.code == 'Alreadt-Register') {
 
       }
       ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.message ?? 'Failed to SignUp')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.message ?? 'Failed to SignUp')));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme
+          .of(context)
+          .colorScheme
+          .primary,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -57,7 +68,7 @@ class _authScreenState extends State<authScreen> {
             children: [
               Container(
                 margin:
-                    EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
+                EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
                 width: 200,
                 child: Image.asset('assets/images/chat.png'),
               ),
@@ -79,7 +90,9 @@ class _authScreenState extends State<authScreen> {
                           autocorrect: false,
                           validator: (value) {
                             if (value == null ||
-                                value.trim().isEmpty ||
+                                value
+                                    .trim()
+                                    .isEmpty ||
                                 !value.contains('@'))
                               return 'Please Enter Valid Email Id';
                             return null;
@@ -96,7 +109,9 @@ class _authScreenState extends State<authScreen> {
                           autocorrect: false,
                           obscureText: true,
                           validator: (value) {
-                            if (value == null || value.trim().length <= 6)
+                            if (value == null || value
+                                .trim()
+                                .length <= 6)
                               return 'Password Contains atleast more than 6 characters';
                             return null;
                           },
