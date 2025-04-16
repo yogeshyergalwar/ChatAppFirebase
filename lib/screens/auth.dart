@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
+
 
 class authScreen extends StatefulWidget {
   const authScreen({super.key});
@@ -16,8 +16,9 @@ final firebase = FirebaseAuth.instance;
 class _authScreenState extends State<authScreen> {
   var _isLogin = true;
   final _Form = GlobalKey<FormState>();
-  var Enteremsil = '';
+  var EnterEmail = '';
   var Enterpassword = '';
+  var EnterUsername='';
 
   Future<void> _submit() async {
     final isValid = _Form.currentState!.validate();
@@ -26,21 +27,21 @@ class _authScreenState extends State<authScreen> {
     }
     _Form.currentState!.save();
     print(Enterpassword);
-    print(Enteremsil);
+    print(EnterEmail);
     try {
       if (_isLogin) {
         final Credential = await firebase.signInWithEmailAndPassword(
-            email: Enteremsil, password: Enterpassword);
+            email: EnterEmail, password: Enterpassword);
         print(Credential);
       } else {
         final Credential = await firebase.createUserWithEmailAndPassword(
-            email: Enteremsil, password: Enterpassword);
+            email: EnterEmail, password: Enterpassword);
         print(Credential);
         await FirebaseFirestore.instance.collection('Users').doc(
             Credential.user?.uid).set(
             {
-              'UseName':'please fill the ',
-              'emailadress':Enteremsil,
+              'UseName':EnterUsername,
+              'emailadress':EnterEmail,
               "Password":Enterpassword
             });
       }
@@ -68,21 +69,42 @@ class _authScreenState extends State<authScreen> {
             children: [
               Container(
                 margin:
-                EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
+                const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
                 width: 200,
                 child: Image.asset('assets/images/chat.png'),
               ),
               Card(
-                margin: EdgeInsets.all(20),
+                margin: const EdgeInsets.all(20),
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(15),
                   child: Form(
                     key: _Form,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        if(!_isLogin)
                         TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
+                            label: Text('Enter User Name'),
+                          ),
+                          keyboardType: TextInputType.text,
+                          textCapitalization: TextCapitalization.none,
+                          autocorrect: false,
+                          validator: (value) {
+                            if (value == null ||
+                                value
+                                    .trim()
+                                    .isEmpty ) {
+                              return 'Please Enter Valid UserName';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            EnterUsername = value!;
+                          },
+                        ),
+                        TextFormField(
+                          decoration: const InputDecoration(
                             label: Text('Email Adress'),
                           ),
                           keyboardType: TextInputType.emailAddress,
@@ -93,16 +115,17 @@ class _authScreenState extends State<authScreen> {
                                 value
                                     .trim()
                                     .isEmpty ||
-                                !value.contains('@'))
+                                !value.contains('@')) {
                               return 'Please Enter Valid Email Id';
+                            }
                             return null;
                           },
                           onSaved: (value) {
-                            Enteremsil = value!;
+                            EnterEmail = value!;
                           },
                         ),
                         TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             label: Text('Password'),
                           ),
                           textCapitalization: TextCapitalization.none,
@@ -111,8 +134,9 @@ class _authScreenState extends State<authScreen> {
                           validator: (value) {
                             if (value == null || value
                                 .trim()
-                                .length <= 6)
+                                .length <= 6) {
                               return 'Password Contains atleast more than 6 characters';
+                            }
                             return null;
                           },
                           onSaved: (value) {

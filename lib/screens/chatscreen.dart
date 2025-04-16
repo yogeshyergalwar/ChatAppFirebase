@@ -3,6 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'chat_messsges.dart';
+import 'new_messages.dart';
+
 class Chatscreen extends StatefulWidget {
   const Chatscreen({super.key});
 
@@ -16,20 +19,22 @@ class _ChatscreenState extends State<Chatscreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chat App'),
-         actions: [
-            IconButton(onPressed: () {
-              FirebaseAuth.instance.signOut();
-            }, icon: Icon(Icons.exit_to_app))
-         ],
+        actions: [
+          IconButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              icon: Icon(Icons.exit_to_app))
+        ],
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           children: [
-            Text('CHAT SCREEN'),
+            Expanded(child: chatmessseges()),
+            NewMessages(),
           ],
         ),
       ),
-
     );
   }
 }
