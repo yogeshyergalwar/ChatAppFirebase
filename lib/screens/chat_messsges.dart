@@ -44,7 +44,7 @@ class _chatmesssegesState extends State<chatmessseges> {
               left: 13,
               right: 13,
             ),
-            reverse: true,
+            reverse: false,
             itemCount: loadMeassages.length,
             itemBuilder: (ctx, index) {
               final chatMessage = loadMeassages[index].data();
