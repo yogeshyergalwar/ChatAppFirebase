@@ -19,7 +19,7 @@ class _chatmesssegesState extends State<chatmessseges> {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('chats')
-            .orderBy('createdAt', descending: false)
+            .orderBy('createdAt',  descending: false)
             .snapshots(),
         builder: (ctext, chatsnapshots) {
           if (chatsnapshots.connectionState == ConnectionState.waiting) {
