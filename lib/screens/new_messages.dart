@@ -26,14 +26,6 @@ class _NewMessagesState extends State<NewMessages> {
     // TODO: implement initState
     super.initState();_subscribeToNotifications();
   }
-/*void sendnotification()async{
-  await PushNotificationServerKey.sendNotificationToMultiple(
-    context,
-    _mssageController.text.trim(),
-    _messageController.text.trim(),
-    '',
-  );*/
-
   void _SubmitMessage()async {
     final Entermessage = _mssageController.text;
     if (Entermessage

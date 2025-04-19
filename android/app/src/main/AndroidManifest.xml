@@ -25,7 +25,7 @@
 
     <application
         android:label="chat_app"
-        android:name="${applicationName}"
+        android:name="$Gropchat app"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBShg61nMBH8gX2kr6q3hXhPIGPVp2jLQE"/>

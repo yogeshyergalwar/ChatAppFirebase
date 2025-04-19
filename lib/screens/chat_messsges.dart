@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 import 'Bobble_page.dart';
 
-class chatmessseges extends StatefulWidget {
-  const chatmessseges({super.key});
+class Chatmessseges extends StatefulWidget {
+  const Chatmessseges({super.key});
 
   @override
-  State<chatmessseges> createState() => _chatmesssegesState();
+  State<Chatmessseges> createState() => _ChatmesssegesState();
 }
 
-class _chatmesssegesState extends State<chatmessseges> {
+class _ChatmesssegesState extends State<Chatmessseges> {
   final authenticatedUser=FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
@@ -23,17 +23,17 @@ class _chatmesssegesState extends State<chatmessseges> {
             .snapshots(),
         builder: (ctext, chatsnapshots) {
           if (chatsnapshots.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
+            return const Center(
+              child:  CircularProgressIndicator(),
             );
           }
           if (!chatsnapshots.hasData || chatsnapshots.data!.docs.isEmpty) {
-            return Center(
+            return  const Center(
               child: Text('No Mesages Found'),
             );
           }
           if (chatsnapshots.hasError) {
-            return Center(
+            return const Center(
               child: Text('No Mesages Founds'),
             );
           }
@@ -70,8 +70,7 @@ class _chatmesssegesState extends State<chatmessseges> {
                   isMe: authenticatedUser?.uid == currentMessageUserId,
                 );
               }
-            },
-          );;
+            },);
         });
   }
 }

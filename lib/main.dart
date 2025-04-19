@@ -49,6 +49,7 @@ class _AppState extends State<App> {
     // Get the FCM token
     String? token = await _firebaseMessaging.getToken();
     print("FCM Token: $token");
+
     // storeFCMToken(token!);
 
     // Set up the foreground notification listener

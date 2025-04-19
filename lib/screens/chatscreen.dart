@@ -47,7 +47,7 @@ class _ChatscreenState extends State<Chatscreen> {
       body: const Center(
         child: Column(
           children: [
-            Expanded(child: chatmessseges()),
+            Expanded(child: Chatmessseges()),
             NewMessages(),
           ],
         ),
